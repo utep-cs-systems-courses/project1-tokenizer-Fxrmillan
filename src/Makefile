@@ -13,7 +13,7 @@ all: tokenrun
 
 # asciidraw (target) depends on all object files (prerequisites)
 asciidraw: $(OBJS) 
-	cc -o asciidraw $(CFLAGS) $(OBJS)
+	cc -o tokenrun $(CFLAGS) $(OBJS)
 
 # all object files built from c files that include draw.h
 $(OBJS): history.h tokenizer.h
