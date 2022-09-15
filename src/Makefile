@@ -22,5 +22,5 @@ $(OBJS): history.h tokenizer.h
 clean:
 	rm -f *.o tokenrun
 
-run:asciidraw
+run:tokenrun
 	./tokenrun
