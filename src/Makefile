@@ -12,7 +12,7 @@ CFLAGS=-g -O3 # -g for debug, -O3 for optimization
 all: tokenrun
 
 # asciidraw (target) depends on all object files (prerequisites)
-asciidraw: $(OBJS) 
+tokenrun: $(OBJS) 
 	cc -o tokenrun $(CFLAGS) $(OBJS)
 
 # all object files built from c files that include draw.h
