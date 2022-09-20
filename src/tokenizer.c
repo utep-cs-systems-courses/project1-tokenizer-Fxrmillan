@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h> 
 int space_char(char c){
-  return c == ' ' ? 1:0;
+  return c == ' ' || c == '\t' ? 1:0;
 }
 
 int non_space_char(char c){
@@ -9,60 +9,58 @@ int non_space_char(char c){
 }
 
 char *word_start(char *str){
-  if(non_space_char(*str))
-    return str;
-  else
-    return 0;
+  while(space_char(*str)){
+      str+=1;
+    }
+   if(*str == '\0'){
+     printf( "str is NULL ");
+      return 0;
+   }
+    else
+      return str;
       
 }
  char *word_terminator(char *word){
-   char* tempStr = word;
-   while (*word  != '\0'){
+   while (non_space_char(*word)){
     word+=1;
   }
   return word;
 }
 
 int count_words(char *str){
-  int counter =1;
+  int counter =0;
   while(*str != '\0' ){
-    counter += space_char(*str);
-    str +=1;
+    str = word_start(str);
+    str = word_terminator(str);
+    counter++;
   }
   return counter;
 }
 
 char *copy_str(char *inStr, short len){
   char *ptr = malloc((len+1) * sizeof(char));
-  for(int count =0; count < len;count++){
+  for(int count =0; count < len ;count++){
     ptr[count] = inStr[count];
-   }
-  ptr[len+1] = '\0';
-  
-   return ptr;
+     }
+  ptr[len] = '\0';
+  return ptr;
 }
 
 char **tokenize(char* str){
-  int totalWords =1;
+  int totalWords =0;
   totalWords =count_words(str);
-  char **tokenAr = malloc(( totalWords+1) * sizeof(char*));
-  int count =0;
-  char* tempStr = str;
-  for(count =0; count < totalWords;++count){
-    int len = 0;
-    while(non_space_char(*tempStr)){
-      len +=1;
-      tempStr +=1;
-    }
-    tempStr +=1;
-    if(*str == '\0')
-      break;
-    tokenAr[count]  = copy_str(str,len);
-    str = tempStr;
+  printf("%s%d\n","words: ", totalWords);
+  char **tokenAr = malloc((totalWords+1) * sizeof(char*));
+  for(int count = 0; count < totalWords;count++){
+  char* start = word_start(str);
+  char* end = word_terminator(start);
+  unsigned int len =  end - start;
+  tokenAr[count] = copy_str(start,len);
+  str = end;
   }
-  tokenAr[count] = "0";
+  tokenAr[totalWords] = "0";
   return tokenAr;
-
+  
 }
 
 void print_tokens(char **tokens){
@@ -71,18 +69,15 @@ void print_tokens(char **tokens){
      printf("%s\n",*tokens);
      tokens += 1;
     }
-  // printf("%s",*tokens);
+  printf("%s\n",*tokens);
 }
 
 void free_tokens(char **tokens){
-  while(**tokens != '0')
+  int count = 0;
+   while(*tokens[count] != '0')
     {
-      free(*tokens);
-      tokens += 1;
+      free(tokens[count]);
+      count++;
     }
-  free(*tokens);
-
-}
-
-
-
+   free(tokens);
+  }
