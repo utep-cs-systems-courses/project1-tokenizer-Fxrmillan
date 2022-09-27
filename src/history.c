@@ -2,20 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 List* init_history(){
-  Item *HeadData = malloc(sizeof(Item));
-  List *headPtr = malloc(sizeof(List));
-  char *headStr = malloc(sizeof(char));
-  HeadData->id = 0;
-  HeadData->str= headStr;
-  HeadData->next = NULL;
-  headPtr ->root = HeadData;
-  printf("%s",headPtr->root->str);
+   List *headPtr = malloc(sizeof(List));
+  headPtr ->root = NULL;
   return headPtr;
 }
 
 void add_history(List *list, char *str){
   Item *listPtr = list->root;
-  while(listPtr->next != NULL){
+  if(listPtr == NULL){
+    Item *headData = malloc(sizeof(Item));
+    headData ->id = 0;
+    headData ->str = str;
+    headData ->next = NULL;
+    list->root = headData;
+  }
+  else{
+  while( listPtr->next != NULL){
     listPtr = listPtr->next;
   }
   Item *tempData = malloc(sizeof(Item));
@@ -26,6 +28,7 @@ void add_history(List *list, char *str){
   tempData->next = NULL;
   listPtr->next = tempData;
   // printf("%s",listPtr->next->str);
+  }
 }
 
 char *get_history(List *list, int id){
@@ -40,7 +43,7 @@ char *get_history(List *list, int id){
 }
 
 void print_history(List *list){
-  Item *listPtr = list->root->next;
+  Item *listPtr = list->root;
   while(listPtr!= NULL){
     printf("%s",listPtr->str);
     listPtr = listPtr ->next;
